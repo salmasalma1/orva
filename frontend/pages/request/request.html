@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Request Service - ORVA</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Animated Background */
+  .bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .bg-animation span {
+    position: absolute;
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    animation: float 25s infinite;
+    bottom: -150px;
+  }
+
+  .bg-animation span:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+  .bg-animation span:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+  .bg-animation span:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+  .bg-animation span:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+  .bg-animation span:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+  .bg-animation span:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
+
+  @keyframes float {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
+    100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+  }
+
+  .container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 50px;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 650px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+  }
+
+  .back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(102, 126, 234, 0.1);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    color: #667eea;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .back-btn:hover {
+    background: rgba(102, 126, 234, 0.2);
+    transform: translateX(-5px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+  }
+
+  h1 {
+    text-align: center;
+    color: #667eea;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    margin-top: 30px;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 40px;
+  }
+
+  .mechanic-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  .mechanic-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mechanic-info p {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    margin: 5px 0;
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+  }
+
+  label {
+    display: block;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+
+  label i {
+    margin-right: 8px;
+    color: #667eea;
+  }
+
+  textarea,
+  input[type="number"] {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 15px;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s;
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  textarea:focus,
+  input[type="number"]:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.2);
+    background: white;
+  }
+
+  textarea {
+    height: 150px;
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .input-hint {
+    font-size: 13px;
+    color: #999;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 35px;
+  }
+
+  button[type="submit"] {
+    flex: 1;
+    padding: 16px 30px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    transition: all 0.3s;
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+    box-shadow: 0 5px 20px rgba(40, 167, 69, 0.3);
+  }
+
+  button[type="submit"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.5);
+  }
+
+  button[type="submit"]:active {
+    transform: translateY(-1px);
+  }
+
+  button[type="submit"] i {
+    margin-right: 8px;
+  }
+
+  .success-message {
+    display: none;
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 20px;
+    animation: slideIn 0.5s ease;
+  }
+
+  .success-message.show {
+    display: block;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .success-message i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+  }
+
+  .success-message h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .success-message p {
+    opacity: 0.9;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container {
+      padding: 30px 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .back-btn {
+      position: relative;
+      top: 0;
+      left: 0;
+      margin-bottom: 20px;
+      width: fit-content;
+    }
+
+    .button-group {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="container">
+    <button class="back-btn" onclick="goBack()">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>
+
+    <h1><i class="fas fa-tools"></i> Request Service</h1>
+    <p class="subtitle">Fill out the form below to request assistance from a mechanic</p>
+
+    <div class="mechanic-info">
+      <h3><i class="fas fa-user-cog"></i> <span id="mechanic-name">Loading...</span></h3>
+      <p><i class="fas fa-envelope"></i> <span id="mechanic-email">-</span></p>
+      <p><i class="fas fa-phone"></i> <span id="mechanic-phone">-</span></p>
+      <p><i class="fas fa-map-marker-alt"></i> <span id="mechanic-address">-</span></p>
+    </div>
+
+    <form id="request-form">
+      <div class="form-group">
+        <label for="issue-description">
+          <i class="fas fa-exclamation-circle"></i> Issue Description
+        </label>
+        <textarea 
+          id="issue-description" 
+          placeholder="Please describe your vehicle issue in detail..."
+          required
+        ></textarea>
+        <div class="input-hint">
+          <i class="fas fa-info-circle"></i>
+          Be as specific as possible to help the mechanic understand your problem
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="payment-amount">
+          <i class="fas fa-money-bill-wave"></i> Offered Payment Amount (EGP)
+        </label>
+        <input 
+          type="number" 
+          id="payment-amount" 
+          placeholder="e.g., 800"
+          min="100"
+          required
+        >
+        <div class="input-hint">
+          <i class="fas fa-info-circle"></i>
+          Minimum payment: 100 EGP
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button type="submit">
+          <i class="fas fa-paper-plane"></i> Send Request
+        </button>
+      </div>
+    </form>
+
+    <div class="success-message" id="success-message">
+      <i class="fas fa-check-circle"></i>
+      <h3>Request Sent Successfully!</h3>
+      <p>The mechanic will review your request and respond soon.</p>
+    </div>
+  </div>
+
+  <script src="request.js"></script>
+</body>
+</html>
