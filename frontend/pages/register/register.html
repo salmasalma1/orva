@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - ORVA</title>
+  
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Animated Background */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .bg-animation span {
+      position: absolute;
+      display: block;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      animation: float 25s infinite;
+      bottom: -150px;
+    }
+
+    .bg-animation span:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+    .bg-animation span:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+    .bg-animation span:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+    .bg-animation span:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+    .bg-animation span:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+    .bg-animation span:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
+    .bg-animation span:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
+    .bg-animation span:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
+      100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+    }
+
+    /* Back Button */
+    .back-btn {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 50px;
+      transition: all 0.3s;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      z-index: 10;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateX(-5px);
+    }
+
+    /* Register Card */
+    .register-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 30px;
+      padding: 50px 40px;
+      width: 100%;
+      max-width: 550px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .logo-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo-section i {
+      font-size: 60px;
+      background: linear-gradient(45deg, #ffd700, #ffed4e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+
+    .logo-section h2 {
+      color: white;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .logo-section p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 16px;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .form-group i {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 16px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"] {
+      width: 100%;
+      padding: 14px 20px 14px 50px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      color: white;
+      font-size: 15px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s;
+      backdrop-filter: blur(10px);
+    }
+
+    .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #ffd700;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+
+    /* Checkbox */
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 25px 0;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s;
+    }
+
+    .checkbox-group:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #ffd700;
+    }
+
+    .checkbox-group label {
+      color: white;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* File Upload */
+    .file-upload {
+      position: relative;
+      margin: 25px 0;
+    }
+
+    .file-upload input[type="file"] {
+      display: none;
+    }
+
+    .file-upload-label {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+      border-radius: 15px;
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .file-upload-label:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: #ffd700;
+    }
+
+    .file-upload-label i {
+      font-size: 24px;
+      color: #ffd700;
+    }
+
+    .file-name {
+      color: #ffd700;
+      font-weight: 500;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(45deg, #ffd700, #ffed4e);
+      border: none;
+      border-radius: 15px;
+      color: #333;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
+    }
+
+    .submit-btn:active {
+      transform: translateY(-1px);
+    }
+
+    #msg {
+      text-align: center;
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 500;
+      display: none;
+    }
+
+    #msg.show {
+      display: block;
+    }
+
+    #msg.error {
+      background: rgba(231, 76, 60, 0.2);
+      color: #ff6b6b;
+      border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+
+    #msg.success {
+      background: rgba(46, 204, 113, 0.2);
+      color: #2ecc71;
+      border: 1px solid rgba(46, 204, 113, 0.3);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 30px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 15px;
+    }
+
+    .login-link a {
+      color: #ffd700;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .login-link a:hover {
+      color: #ffed4e;
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .register-container {
+        padding: 40px 30px;
+      }
+
+      .logo-section h2 {
+        font-size: 28px;
+      }
+
+      .back-btn {
+        top: 20px;
+        left: 20px;
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- Back Button -->
+  <a href="../../index.html" class="back-btn" data-aos="fade-right">
+    <i class="fas fa-arrow-left"></i>
+    Back to Home
+  </a>
+
+  <!-- Register Card -->
+  <div class="register-container" data-aos="zoom-in" data-aos-duration="800">
+    <div class="logo-section">
+      <i class="fas fa-user-plus" data-aos="flip-down" data-aos-delay="200"></i>
+      <h2 data-aos="fade-up" data-aos-delay="300">Create Account</h2>
+      <p data-aos="fade-up" data-aos-delay="400">Join ORVA today and get started</p>
+    </div>
+
+    <form id="registerForm" enctype="multipart/form-data">
+      <div class="form-group" data-aos="fade-right" data-aos-delay="500">
+        <i class="fas fa-user"></i>
+        <input id="name" type="text" name="name" placeholder="Full Name" required />
+      </div>
+
+      <div class="form-group" data-aos="fade-right" data-aos-delay="550">
+        <i class="fas fa-envelope"></i>
+        <input id="email" type="email" name="email" placeholder="Email Address" required />
+      </div>
+
+      <div class="form-group" data-aos="fade-right" data-aos-delay="600">
+        <i class="fas fa-lock"></i>
+        <input id="password" type="password" name="password" placeholder="Password (min 6 characters)" required minlength="6" />
+      </div>
+
+      <div class="form-group" data-aos="fade-right" data-aos-delay="650">
+        <i class="fas fa-phone"></i>
+        <input id="phone" type="text" name="phone" placeholder="Phone Number" required />
+      </div>
+
+      <div class="form-group" data-aos="fade-right" data-aos-delay="700">
+        <i class="fas fa-id-card"></i>
+        <input id="N_id" type="text" name="national_id" placeholder="National ID" required />
+      </div>
+
+      <div class="form-group" data-aos="fade-right" data-aos-delay="750">
+        <i class="fas fa-map-marker-alt"></i>
+        <input id="address" type="text" name="address" placeholder="Address" required />
+      </div>
+
+      <div class="form-group" data-aos="fade-right" data-aos-delay="800">
+        <i class="fas fa-birthday-cake"></i>
+        <input id="age" type="number" name="age" placeholder="Age" min="18" max="100" required />
+      </div>
+
+      <div class="form-group" data-aos="fade-right" data-aos-delay="850">
+        <i class="fas fa-car"></i>
+        <input id="vehicleType" type="text" name="vehicleType" placeholder="Vehicle Type (e.g., Sedan, SUV)" required />
+      </div>
+
+      <div class="checkbox-group" data-aos="fade-up" data-aos-delay="900">
+        <input id="isMechanic" type="checkbox" name="isMechanic" />
+        <label for="isMechanic">
+          <i class="fas fa-wrench"></i> Register as Mechanic
+        </label>
+      </div>
+
+      <div id="mechanic-location-section" style="display: none; margin: 20px 0;">
+        <div class="form-group">
+          <i class="fas fa-map-marker-alt"></i>
+          <input id="workLocation" type="text" name="workLocation" placeholder="Enter location: latitude, longitude (e.g., 30.0444, 31.2357)" />
+        </div>
+        <button type="button" id="getLocationBtn" style="width: 100%; padding: 12px; background: rgba(255, 215, 0, 0.2); border: 2px solid #ffd700; border-radius: 12px; color: #ffd700; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 10px;">
+          <i class="fas fa-crosshairs"></i> Auto-Detect My Location
+        </button>
+        <p id="location-status" style="text-align: center; margin-top: 10px; color: rgba(255, 255, 255, 0.7); font-size: 14px;"></p>
+      </div>
+
+      <div class="file-upload" data-aos="fade-up" data-aos-delay="850">
+        <input id="photo" type="file" name="photo" accept="image/*" onchange="updateFileName(this)" />
+        <label for="photo" class="file-upload-label">
+          <i class="fas fa-camera"></i>
+          <span id="file-label">Upload Profile Photo (Optional)</span>
+        </label>
+      </div>
+
+      <button type="submit" class="submit-btn" data-aos="fade-up" data-aos-delay="900">
+        <span class="btn-text">Create Account</span>
+      </button>
+    </form>
+
+    <p id="msg"></p>
+
+    <div class="login-link" data-aos="fade-up" data-aos-delay="950">
+      Already have an account? <a href="../login/login.html">Login here</a>
+    </div>
+  </div>
+
+  <!-- AOS Animation Script -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true
+    });
+
+    function updateFileName(input) {
+      const label = document.getElementById('file-label');
+      if (input.files && input.files[0]) {
+        label.innerHTML = '<span class="file-name">✓ ' + input.files[0].name + '</span>';
+      } else {
+        label.textContent = 'Upload Profile Photo (Optional)';
+      }
+    }
+  </script>
+  
+  <script src="register.js" defer></script>
+</body>
+</html>
