@@ -1,0 +1,52 @@
+[
+  {
+    "_id": "sampleadmin0001",
+    "name": "Sample Admin",
+    "email": "admin@example.com",
+    "password": "$2b$10$vTL4g5Pc7vY0uDCNMXdkfOszNgyySfeVZrt1WoWRPngILca9pRtWW",
+    "phone": "01000000099",
+    "nationalId": "00000000000099",
+    "address": "Sample Address",
+    "age": 30,
+    "vehicleType": "N/A",
+    "isMechanic": false,
+    "isAdmin": true,
+    "photo": "",
+    "createdAt": "2025-12-01T10:00:00.000Z",
+    "updatedAt": "2025-12-01T10:00:00.000Z"
+  },
+  {
+    "_id": "sampleuser00001",
+    "name": "Sample User",
+    "email": "user@example.com",
+    "password": "$2b$10$vTL4g5Pc7vY0uDCNMXdkfOszNgyySfeVZrt1WoWRPngILca9pRtWW",
+    "phone": "01000000001",
+    "nationalId": "00000000000001",
+    "address": "Sample Address",
+    "age": 25,
+    "vehicleType": "Sample Car",
+    "isMechanic": false,
+    "isAdmin": false,
+    "photo": "",
+    "createdAt": "2025-12-01T10:00:00.000Z",
+    "updatedAt": "2025-12-01T10:00:00.000Z"
+  },
+  {
+    "_id": "samplemech00001",
+    "name": "Sample Mechanic",
+    "email": "mechanic@example.com",
+    "password": "$2b$10$vTL4g5Pc7vY0uDCNMXdkfOszNgyySfeVZrt1WoWRPngILca9pRtWW",
+    "phone": "01000000002",
+    "nationalId": "00000000000002",
+    "address": "Sample Address",
+    "age": 35,
+    "vehicleType": "All Types",
+    "isMechanic": true,
+    "isAdmin": false,
+    "photo": "",
+    "description": "Fake sample mechanic for local testing.",
+    "specialties": ["Engine", "Tyres"],
+    "createdAt": "2025-12-01T10:00:00.000Z",
+    "updatedAt": "2025-12-01T10:00:00.000Z"
+  }
+]

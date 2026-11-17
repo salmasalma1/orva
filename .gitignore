@@ -1,0 +1,24 @@
+node_modules/
+.env
+.env.*
+!.env.example
+
+# personal / runtime data (real records are never committed; see samples/)
+backend/data/*.json
+backend/uploads/
+data/users.json
+data/mechanics.json
+data/admins.json
+data/history_requests.json
+data/reviews.json
+data/Wait_review.csv
+images/users/
+images/Mechanics/
+
+# local backups and editor files
+*.backup
+*.log
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

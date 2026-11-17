@@ -1,172 +1,92 @@
-# ORVA - On Road Vehicle Assistance
+# ORVA – On Road Vehicle Assistance
 
-## Project Structure
+ORVA is a web app that connects drivers who need roadside help with nearby mechanics. It has three roles (user, mechanic, admin), service requests, and a chat between users and mechanics.
+
+It is a solo project by Salma Ashraf, built in November–December 2025.
+
+> **Status: unfinished prototype.** It has not been tested end to end, and some parts don't work together yet (see [Known issues](#known-issues)).
+
+## Tech stack
+
+- **Backend:** Node.js, Express 5, JSON-file storage (`backend/utils/fileDb.js`), JWT auth (`jsonwebtoken`), password hashing (`bcryptjs`), photo uploads (`multer`)
+- **Frontend:** plain HTML, CSS and JavaScript (no framework), served as static files by the backend
+
+## Project structure
 
 ```
 ORVA_01/
-├── backend/
-│   ├── config/
-│   │   └── db.js                 # Database configuration
-│   ├── controllers/
-│   │   ├── userController.js     # User operations
-│   │   ├── mechanicController.js # Mechanic operations
-│   │   └── requestController.js  # Service request operations
-│   ├── middleware/
-│   │   ├── authMiddleware.js     # JWT authentication
-│   │   ├── errorMiddleware.js    # Error handling with 404 page
-│   │   └── uploadMiddleware.js   # File upload handling
-│   ├── models/
-│   │   ├── userModel.js          # User schema
-│   │   └── requestModel.js       # Service request schema
-│   ├── routes/
-│   │   ├── userRoutes.js         # User API routes
-│   │   ├── mechanicRoutes.js     # Mechanic API routes
-│   │   └── requestRoutes.js      # Request API routes
-│   ├── uploads/                  # Uploaded files directory
-│   ├── .env                      # Environment variables
-│   ├── package.json              # Backend dependencies
-│   └── server.js                 # Main server file
-│
-└── frontend/
-    ├── css/
-    │   └── Style_Sheet.css       # Styles
-    ├── pages/                    # HTML pages
-    ├── index.html                # Main page
-    └── images/                   # Static images
-
+├── backend/                 # main API server (port 5000)
+│   ├── controllers/         # users, mechanics, requests, chats
+│   ├── middleware/          # JWT auth, error pages, uploads
+│   ├── routes/              # /api/users, /api/mechanics, /api/requests, /api/chats
+│   ├── utils/fileDb.js      # JSON-file database used by all controllers
+│   ├── config/db.js         # MongoDB connection (currently unused)
+│   ├── models/              # Mongoose schemas (currently unused)
+│   ├── seedMechanics.js     # adds demo mechanic accounts
+│   ├── data/                # JSON data files (created at runtime, not in git)
+│   ├── .env.example
+│   └── server.js
+├── frontend/
+│   ├── index.html
+│   ├── css/
+│   └── pages/               # login, register, home_user, home_mechanic, home_admin, request
+├── server.js                # older standalone server (port 3000), see Known issues
+├── data/                    # JSON data files for the older server
+├── images/                  # logos and icons
+└── samples/                 # FAKE sample records for local testing
 ```
 
-## Features
+## Setup
 
-### Backend (Express.js + MongoDB)
-- ✅ RESTful API with Express.js
-- ✅ MongoDB database with Mongoose ODM
-- ✅ JWT authentication
-- ✅ User registration and login
-- ✅ Mechanic management
-- ✅ Service request management
-- ✅ File upload for user photos
-- ✅ Custom error pages (404, 500, etc.)
-- ✅ CORS enabled
-- ✅ Input validation
+Requirements: Node.js 18+ (Express 5 needs a recent Node version).
 
-### API Endpoints
+```bash
+cd backend
+npm install
+cp .env.example .env        # Windows: copy .env.example .env
+npm run dev                 # or: npm start
+```
 
-#### Users
-- `POST /api/users/register` - Register new user
-- `POST /api/users/login` - Login user
-- `GET /api/users/profile` - Get user profile (protected)
-- `PUT /api/users/profile` - Update user profile (protected)
-- `GET /api/users/mechanics` - Get all mechanics
+Then open http://localhost:5000.
 
-#### Mechanics
-- `GET /api/mechanics` - Get all mechanics
-- `GET /api/mechanics/:id` - Get mechanic by ID
-- `PUT /api/mechanics/profile` - Update mechanic profile (protected)
+### Environment variables (`backend/.env`)
 
-#### Requests
-- `POST /api/requests` - Create new service request (protected)
-- `GET /api/requests` - Get user's requests (protected)
-- `GET /api/requests/mechanic` - Get mechanic's requests (protected)
-- `GET /api/requests/:id` - Get request by ID (protected)
-- `PUT /api/requests/:id` - Update request status (protected)
-- `DELETE /api/requests/:id` - Delete request (protected)
+| Variable | Required | Description |
+|---|---|---|
+| `PORT` | No | Port for the backend server (default `5000`) |
+| `NODE_ENV` | No | `development` shows error details on the error page; `production` hides them |
+| `JWT_SECRET` | Yes | Secret used to sign login tokens. Use a long random string. |
 
-## Setup Instructions
+## Sample data
 
-### Prerequisites
-- Node.js (v14 or higher)
-- MongoDB (running locally or remote)
+Real user records and photos are **not** in this repository. The `samples/` folder contains a few **clearly fake** records (names like "Sample User", `@example.com` emails, IDs such as `00000000000001`) so you can try the app locally:
 
-### Installation
+| File | Copy to | Used by |
+|---|---|---|
+| `samples/backend-data/users.json` | `backend/data/users.json` | backend server |
+| `samples/data/users.json` | `data/users.json` | older root server |
+| `samples/data/mechanics.json` | `data/mechanics.json` | older root server |
+| `samples/data/admins.json` | `data/admins.json` | older root server |
 
-1. **Install Backend Dependencies**
-   ```bash
-   cd backend
-   npm install
-   ```
+All sample accounts use the password `password123`. Backend logins: `admin@example.com`, `user@example.com`, `mechanic@example.com`.
 
-2. **Configure Environment Variables**
-   
-   Edit `backend/.env`:
-   ```env
-   PORT=5000
-   NODE_ENV=development
-   MONGO_URI=mongodb://localhost:27017/orva
-   JWT_SECRET=your_jwt_secret_key_here
-   ```
+You can also run `node seedMechanics.js` inside `backend/` to add demo mechanic accounts.
 
-3. **Start MongoDB**
-   ```bash
-   sudo systemctl start mongod
-   # or
-   sudo service mongod start
-   ```
+## Usage
 
-4. **Run the Server**
-   
-   Development mode (with auto-reload):
-   ```bash
-   cd backend
-   npm run dev
-   ```
-   
-   Production mode:
-   ```bash
-   cd backend
-   npm start
-   ```
+1. Register at `/pages/register/register.html`, or log in with a sample account at `/pages/login/login.html`.
+2. After login you are sent to the user, mechanic or admin dashboard depending on the account type.
+3. Users can create service requests and chat with mechanics. Admins can view and delete users.
 
-5. **Access the Application**
-   - Frontend: http://localhost:5000
-   - API: http://localhost:5000/api
+## Known issues
 
-## Error Handling
+- **Two servers that don't match.** The mechanic dashboard (`frontend/pages/home_mechanic/`) calls routes such as `/pending/:id` and `/request/accept/:id` that exist only in the older root `server.js`. When you run the main `backend/` server, those calls fail. All other pages use the backend's `/api/...` routes.
+- **The older root server is not secure.** It stores passwords in plain text, and its login checks only the national ID, not a password.
+- **Uploaded photos may get saved as `undefined.*`**, which suggests a bug in how the file name is built.
+- **MongoDB is not used.** `config/db.js` and `models/` are left over from an earlier design; all data goes to JSON files.
+- **CORS** in `backend/server.js` only allows `localhost:5500` / `127.0.0.1:5500`. Pages served by the backend itself (port 5000) are same-origin and unaffected.
+- `SETUP_GUIDE.md` is an older note and describes the project as fully working, which it isn't.
 
-The application includes a custom error handling system that displays:
-- **404 Error Page** - When a route is not found
-- **500 Error Page** - When a server error occurs
-- Detailed error information in development mode
-- Clean error messages in production mode
+## License
 
-## Security Features
-
-- Password hashing with bcrypt
-- JWT token authentication
-- Protected routes
-- Input validation
-- File upload restrictions (images only, 5MB max)
-- CORS configuration
-
-## Database Models
-
-### User Model
-- name, email, password (hashed)
-- phone, nationalId, address
-- photo (file path)
-- isMechanic, isAdmin flags
-- timestamps
-
-### Request Model
-- user (reference to User)
-- mechanic (reference to User)
-- serviceType, vehicleType, description
-- location (GeoJSON with coordinates)
-- status (pending, accepted, in-progress, completed, cancelled)
-- estimatedCost, actualCost
-- completionTime
-- timestamps
-
-## Development
-
-- Backend runs on port 5000 by default
-- MongoDB connection string can be configured in `.env`
-- Use `npm run dev` for development with nodemon auto-reload
-- All API routes are prefixed with `/api`
-
-## Notes
-
-- Make sure MongoDB is running before starting the server
-- Update the JWT_SECRET in `.env` for production
-- The frontend is served as static files from the backend server
-- Uploaded files are stored in `backend/uploads/`
+[MIT](LICENSE) © 2025 Salma Ashraf
