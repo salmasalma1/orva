@@ -87,6 +87,3 @@ You can also run `node seedMechanics.js` inside `backend/` to add demo mechanic 
 - **CORS** in `backend/server.js` only allows `localhost:5500` / `127.0.0.1:5500`. Pages served by the backend itself (port 5000) are same-origin and unaffected.
 - `SETUP_GUIDE.md` is an older note and describes the project as fully working, which it isn't.
 
-## License
-
-[MIT](LICENSE) © 2025 Salma Ashraf
